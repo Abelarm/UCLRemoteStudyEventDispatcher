@@ -1,5 +1,5 @@
 <UCL Remote Study Event Dispatcher>
-Copyright (C) University College London
+Copyright (C) University College London,2015
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
