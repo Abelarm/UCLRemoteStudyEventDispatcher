@@ -1,0 +1,12 @@
+{"Commands":
+  [
+    {"Add Participant": "AddParticipant"},
+    {"Insert Event": "InsertEvent"},
+    {"List Event": "ListEvent"},
+    {"Delete Event": "DeleteEvent"},
+    {"Delete Password": "DeletePassword"},
+    {"Delete WebSite": "DeleteWebsite"},
+    {"Delete All Event": "DeleteAllEvent"},
+    {"Delete Participant": "DeleteParticipant"}
+  ]
+}

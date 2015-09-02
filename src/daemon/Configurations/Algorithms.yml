@@ -1,0 +1,19 @@
+algorithms:
+    zxcvbn:
+        name: "zxcvbn"
+        keys: "Password"
+        version: "1.0"
+    ManglePassword:
+        name: "ManglePass"
+        keys: "Password"
+        path: "/ManglePassword"
+        version: "1.0"
+    ShannonEntropy:
+        name: "ShannonEntropy"
+        keys: "Password"
+        version: "1.0"
+    FindSimilarityWords:
+        name: "FindSimilarityWords"
+        keys: "Text",Website","Password","HashPassword"
+        path: "/FindSimilarityWords"
+        version: "1.0"
