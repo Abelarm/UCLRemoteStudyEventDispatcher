@@ -124,7 +124,7 @@ class Dispatcher:
 
         if ParticipandID not in self.participant:
             return False
-        toret=self.participant[ParticipandID].insertEvent(None,Event)
+        toret=self.participant[ParticipandID].insertEvent(Event)
         self.participant.close()
         return toret
 
