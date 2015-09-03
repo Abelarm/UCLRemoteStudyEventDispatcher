@@ -182,8 +182,8 @@ def main():
     Host='localhost'
     Port = 5671
     Ssl = ({
-    'certfile' : '/Users/Luigi/Sites/Internship/rabbitmq_server-3.5.4/Certificate/client/cert.pem',
-    'keyfile': '/Users/Luigi/Sites/Internship/rabbitmq_server-3.5.4/Certificate/client/key.pem',
+    'certfile' : '/path/to/your/client/cert.pem',
+    'keyfile': '/path/to/your/client/key.pem',
     'server_side': False})
     Name='hello'
 
