@@ -10,6 +10,5 @@ ensure that RabbitMQ works.
 Run setup.py
      -c install #For installing in /home/daemon
      -p path #For installing in different path
-     -c uninstall #For uninstalling it
 
-Python 3.3+ is needed
+Python 3.3+, pip is needed
