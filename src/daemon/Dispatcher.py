@@ -6,6 +6,7 @@ from Participant import Participant
 from Algorithm import Algorithm
 import json
 from pydoc import locate
+from multiprocessing import Process
 
 class Dispatcher:
 
@@ -18,8 +19,8 @@ class Dispatcher:
 
         listalg = open(filename,'r')
 
-        if os.path.dirname(os.path.abspath('DB'))+'/DB/AlgorithmDB':
-            os.remove(os.path.dirname(os.path.abspath('DB'))+'/DB/AlgorithmDB')
+        if os.path.dirname(os.path.abspath('DB'))+'/DB/AlgorithmDB.db':
+            os.remove(os.path.dirname(os.path.abspath('DB'))+'/DB/AlgorithmDB.db')
             self.algorithm= shelve.open('DB/AlgorithmDB')
 
         alg=None
@@ -63,8 +64,8 @@ class Dispatcher:
     def loadCommands(self,filename):
 
 
-        if os.path.dirname(os.path.abspath('DB'))+'/DB/CommandsDB':
-            os.remove(os.path.dirname(os.path.abspath('DB'))+'/DB/CommandsDB')
+        if os.path.dirname(os.path.abspath('DB'))+'/DB/CommandsDB.db':
+            os.remove(os.path.dirname(os.path.abspath('DB'))+'/DB/CommandsDB.db')
             self.commands= shelve.open('DB/CommandsDB')
 
         with open(filename,'r') as listcommand:
@@ -124,7 +125,8 @@ class Dispatcher:
             return False
         if Test:
             toret=self.participant[ParticipandID].insertEvent(None,Event)
-        toret=self.participant[ParticipandID].insertEvent(Event)
+        else:
+            toret=self.participant[ParticipandID].insertEvent(Event)
         self.participant.close()
         return toret
 
@@ -220,7 +222,8 @@ class Dispatcher:
                 #print(param)
                 loadedclass  = locate('Algorithms.'+algorithmID+'.'+algorithmID+'.'+algorithmID)
                 param.append(subdirectory+'/')
-                loadedclass(*param)
+                proc=Process(target=loadedclass,args=param)
+                proc.start()
                 param=[]
 
 
@@ -303,7 +306,7 @@ def Menu():
     def loadEvent():
         id = input("Give ID of which user create event:"+prompt)
         path = input("Give path of event:"+prompt)
-        eve=disp.inserEvent(id,path)
+        eve=disp.inserEvent(id,path,Test=True)
         if not eve:
             print("Somenthing wrong!!")
             return False
