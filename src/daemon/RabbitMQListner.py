@@ -24,7 +24,6 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
     channel.exchange_declare(exchange=ExchangeName,durable=True)
     channel.queue_declare(queue=QueueName)
 
-
     channel.queue_bind(exchange=ExchangeName,queue=QueueName)
 
 

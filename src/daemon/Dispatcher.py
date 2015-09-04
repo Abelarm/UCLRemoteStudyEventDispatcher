@@ -79,9 +79,7 @@ class Dispatcher:
             #print (key)
 
             for tkey in key:
-
                 self.commands[tkey] = key[tkey]
-
 
         self.commands.close()
 
