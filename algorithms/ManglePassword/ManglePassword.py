@@ -310,7 +310,7 @@ class ManglePassword:
         db = shelve.open(self.filepath)
         salt = db[str("salt")]
         for p in self.variations:
-            print("Hashing " + str(i) + " variations")
+            #print("Hashing " + str(i) + " variations")
             self.hashedpass['var' + str(i)] = binascii.hexlify(scrypt.hash(p, salt, 2048, 8, 1, 64))
             i = i + 1
 
