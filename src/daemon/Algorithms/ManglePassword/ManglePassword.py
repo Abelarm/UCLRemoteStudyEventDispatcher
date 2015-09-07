@@ -4,7 +4,6 @@ __author__ = 'Luigi'
 import shelve
 import scrypt
 import os,binascii
-import os
 
 
 class ManglePassword:
@@ -348,7 +347,7 @@ class ManglePassword:
         self.upperLower()
         self.removeDuplicate()
 
-        #self.hashVariations()
+        self.hashVariations()
 
         #print(self.variations)
         #print(len(self.variations))
