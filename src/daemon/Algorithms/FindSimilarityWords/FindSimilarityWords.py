@@ -7,7 +7,7 @@ from pydoc import locate
 
 class FindSimilarityWords:
 
-    def __init__(self,Text,Website,Password,HashPassword,Path=None):
+    def __init__(self,Text,Website,Password,HashPassword,writePath=None,Path=None):
 
         if Path:
             self.filenamePass = Path + 'SimilarityObjects_Pass'
@@ -16,6 +16,9 @@ class FindSimilarityWords:
         else:
             self.filenamePass = 'SimilarityObjects_Pass'
             self.filenameText  = 'SimilarityObjects_Text'
+
+        if writePath:
+            self.writePath=writePath
 
         self.dbPass = shelve.open(self.filenamePass)
         self.dbText = shelve.open(self.filenameText)
@@ -78,7 +81,13 @@ class FindSimilarityWords:
         self.dbPass.close()
         self.dbPass.close()
 
-        return [listOfWebsite,listOfPassword]
+        with open(self.writePath+'FindSimilarity') as o:
+            if listOfWebsite:
+                o.write('Password found in website:')
+                o.write(str(listOfWebsite))
+            if listOfPassword:
+                o.write('Password found in word:')
+                o.write(str(listOfPassword))
 
 
 if __name__ == '__main__':

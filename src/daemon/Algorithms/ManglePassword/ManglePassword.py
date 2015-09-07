@@ -8,7 +8,7 @@ import os
 
 
 class ManglePassword:
-    def __init__(self, password, path=None):
+    def __init__(self, password,writePath=None,path=None):
 
 
 
@@ -18,6 +18,8 @@ class ManglePassword:
             self.filepath = path  + 'HashPass'
         else:
             self.filepath =  'HashPass'
+
+        print(self.filepath)
 
         db = shelve.open(self.filepath)
 
@@ -38,12 +40,15 @@ class ManglePassword:
             # print(db['variations'])
             hasedvar = db['variations']
             if self.hashedpassword in list(hasedvar.values()):
-                print('hash found!!')
+                with open(writePath+'ManglePassword') as o:
+                    o.write('hash found:')
+                    o.write(self.hashedpassword)
                 return
 
         except KeyError:
             # return
-            print('Hash not found')
+            True
+            # print('Hash not found')
             # traceback.print_exc(file=sys.stdout)
 
         db.close()
@@ -312,7 +317,7 @@ class ManglePassword:
         db = shelve.open(self.filepath)
         salt = db[str("salt")]
         for p in self.variations:
-            print("Hashing " + str(i) + " variations")
+            #print("Hashing " + str(i) + " variations")
             self.hashedpass['var' + str(i)] = binascii.hexlify(scrypt.hash(p, salt, 2048, 8, 1, 64))
             i = i + 1
 
@@ -343,7 +348,7 @@ class ManglePassword:
         self.upperLower()
         self.removeDuplicate()
 
-        self.hashVariations()
+        #self.hashVariations()
 
         #print(self.variations)
         #print(len(self.variations))

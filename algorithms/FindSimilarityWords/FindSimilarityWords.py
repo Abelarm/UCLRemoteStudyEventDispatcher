@@ -7,14 +7,18 @@ from pydoc import locate
 
 class FindSimilarityWords:
 
-    def __init__(self,Text,Website,Password,HashPassword,Path=None):
+    def __init__(self,Text,Website,Password,HashPassword,Path=None,writePath=None):
 
         if Path:
             self.filenamePass = Path + 'SimilarityObjects_Pass'
             self.filenameText  = Path + 'SimilarityObjects_Text'
+            self.path = Path
         else:
             self.filenamePass = 'SimilarityObjects_Pass'
             self.filenameText  = 'SimilarityObjects_Text'
+
+        if writePath:
+            self.writePath=writePath
 
         self.dbPass = shelve.open(self.filenamePass)
         self.dbText = shelve.open(self.filenameText)
@@ -39,14 +43,14 @@ class FindSimilarityWords:
         try:
             self.dbPass['Class']
         except KeyError:
-            self.dbPass['Class'] = CBOWP()
+            self.dbPass['Class'] = CBOWP(self.path)
 
         CBOWT = locate('CreateBowText.CreateBowText')
 
         try:
             self.dbText['Class']
         except KeyError:
-            self.dbText['Class'] = CBOWT()
+            self.dbText['Class'] = CBOWT(self.path)
 
         ListOfWords = wordsegment.segment(self.Password)
 
@@ -77,7 +81,13 @@ class FindSimilarityWords:
         self.dbPass.close()
         self.dbPass.close()
 
-        return [listOfWebsite,listOfPassword]
+        with open(self.writePath+'FindSimilarity') as o:
+            if listOfWebsite:
+                o.write('Password found in website:')
+                o.write(str(listOfWebsite))
+            if listOfPassword:
+                o.write('Password found in word:')
+                o.write(str(listOfPassword))
 
 
 if __name__ == '__main__':

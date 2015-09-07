@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Luigi'
 
 import shelve
@@ -7,7 +8,7 @@ import os
 
 
 class ManglePassword:
-    def __init__(self, password, path=None):
+    def __init__(self, password, path=None,writePath=None):
 
 
 
@@ -37,12 +38,15 @@ class ManglePassword:
             # print(db['variations'])
             hasedvar = db['variations']
             if self.hashedpassword in list(hasedvar.values()):
-                print('hash found!!')
+                with open(writePath+'ManglePassword') as o:
+                    o.write('hash found:')
+                    o.write(self.hashedpassword)
                 return
 
         except KeyError:
             # return
-            print('Hash not found')
+            True
+            # print('Hash not found')
             # traceback.print_exc(file=sys.stdout)
 
         db.close()
@@ -100,9 +104,10 @@ class ManglePassword:
 
     def parseKeyboardFile(self, path):
 
-        with open(path) as f:
-            for line in f:
-
+        with open(path,'rb') as f:
+            for raw in f:
+               
+                line = raw.decode('utf-8','replace')
                 line=line.strip('\n')
 
                 div= line.split("= ",1)
@@ -339,9 +344,9 @@ class ManglePassword:
             self.appendYear(y)
         self.reverse()
         self.upperLower()
-        #self.removeDuplicate()
+        self.removeDuplicate()
 
-        #self.hashVariations()
+        self.hashVariations()
 
         #print(self.variations)
         #print(len(self.variations))

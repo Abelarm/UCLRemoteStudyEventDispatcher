@@ -200,13 +200,20 @@ class Dispatcher:
                     os.makedirs(directory)
 
                 p=self.algorithm[algorithmID].getPath()
+                #ALWAYS append the Event's directory first
+                subdirectory=[]
                 if p:
-                    subdirectory=directory+p
+                    subdirectory.append(directory+'/Event_'+mainevent.getID())
+                    subdirectory.append(directory+p+'/')
                 else:
-                    subdirectory=directory+'/Event_'+mainevent.getID()
+                    subdirectory.append(directory+'/Event_'+mainevent.getID())
 
-                if not os.path.exists(subdirectory):
-                    os.makedirs(subdirectory)
+
+                for dir in subdirectory:
+                    if not os.path.exists(dir):
+                        os.makedirs(dir)
+
+                subdirectory[0] = subdirectory[0]+'/'
 
                 #f.write('DONE\n')
                 param = []
@@ -221,11 +228,10 @@ class Dispatcher:
                 #print(algorithmID)
                 #print(param)
                 loadedclass  = locate('Algorithms.'+algorithmID+'.'+algorithmID+'.'+algorithmID)
-                param.append(subdirectory+'/')
+                [param.append(s) for s in subdirectory]
                 proc=Process(target=loadedclass,args=param)
                 proc.start()
                 param=[]
-
 
                 #time.sleep(3)
             else:
