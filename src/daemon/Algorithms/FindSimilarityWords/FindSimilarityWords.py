@@ -40,14 +40,14 @@ class FindSimilarityWords:
         self.dbPass = shelve.open(self.filenamePass)
         self.dbText = shelve.open(self.filenameText)
         
-        CBOWP  = locate('CreateBowPassword.CreateBowPassoword')       
+        CBOWP  = locate('CreateBoWPassword.CreateBoWPassword')
 
         try:
             self.dbPass['Class']
         except KeyError:
             self.dbPass['Class'] = CBOWP(self.path)
 
-        CBOWT = locate('CreateBowText.CreateBowText')
+        CBOWT = locate('CreateBoWText.CreateBoWText')
 
         try:
             self.dbText['Class']
