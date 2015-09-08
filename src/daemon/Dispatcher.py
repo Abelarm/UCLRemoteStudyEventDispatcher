@@ -122,7 +122,7 @@ class Dispatcher:
         self.participant = shelve.open('DB/ParticipantDB')
 
         if ParticipandID not in self.participant:
-            return False
+            self.addParticipant(ParticipandID)
         if Test:
             toret=self.participant[ParticipandID].insertEvent(None,Event)
         else:
@@ -135,7 +135,6 @@ class Dispatcher:
         self.participant = shelve.open('DB/ParticipantDB')
 
         if ParticipantID in self.participant:
-
             toreturn = self.participant[ParticipantID].setComputated(EventID,AlgName,Version)
             self.participant.close()
             return toreturn
