@@ -123,6 +123,8 @@ class Dispatcher:
 
         if ParticipandID not in self.participant:
             self.addParticipant(ParticipandID)
+            self.participant.close()
+            self.participant = shelve.open('DB/ParticipantDB')
         if Test:
             toret=self.participant[ParticipandID].insertEvent(None,Event)
         else:
