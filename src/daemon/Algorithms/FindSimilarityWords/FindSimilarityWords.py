@@ -81,7 +81,7 @@ class FindSimilarityWords:
         self.dbPass.close()
         self.dbPass.close()
 
-        with open(self.writePath+'FindSimilarity') as o:
+        with open(self.writePath+'FindSimilarity','w') as o:
             if listOfWebsite:
                 o.write('Password found in website:')
                 o.write(str(listOfWebsite))
