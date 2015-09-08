@@ -4,6 +4,10 @@ import wordsegment
 import nltk.stem as lem
 import nltk
 from pydoc import locate
+import sys,os
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+from CreateBoWText import CreateBoWText
+from CreateBoWPassword import CreateBoWPassword
 
 class FindSimilarityWords:
 
@@ -16,9 +20,12 @@ class FindSimilarityWords:
         else:
             self.filenamePass = 'SimilarityObjects_Pass'
             self.filenameText  = 'SimilarityObjects_Text'
+            self.path=''
 
         if writePath:
             self.writePath=writePath
+        else:
+            self.writePath=''
 
         self.dbPass = shelve.open(self.filenamePass)
         self.dbText = shelve.open(self.filenameText)
@@ -32,28 +39,34 @@ class FindSimilarityWords:
         self.HashPassword = HashPassword
 
         nltk.data.path.append("/opt/python3-inst/share/")
-
-        self.ComputeSimilarity()
-
+        
+        self.ComputeSimilarity()       
+ 
     def ComputeSimilarity(self):
 
         self.dbPass = shelve.open(self.filenamePass)
         self.dbText = shelve.open(self.filenameText)
-        
-        CBOWP  = locate('CreateBoWPassword.CreateBoWPassword')
+
+        CBOWP  = CreateBoWPassword        
+       
+        try:
+            self.dbPass["Class"]
+        except KeyError:
+            self.dbPass["Class"] = CBOWP(self.path)
+
+        CBOWT = CreateBoWText
 
         try:
-            self.dbPass['Class']
+            self.dbText["Class"]
         except KeyError:
-            self.dbPass['Class'] = CBOWP(self.path)
+            self.dbText["Class"] = CBOWT(self.path)
 
-        CBOWT = locate('CreateBoWText.CreateBoWText')
-
-        try:
-            self.dbText['Class']
-        except KeyError:
-            self.dbText['Class'] = CBOWT(self.path)
-
+        self.dbPass.close()
+        self.dbText.close()
+    
+        self.dbPass = shelve.open(self.filenamePass)
+        self.dbText = shelve.open(self.filenameText)   
+  
         ListOfWords = wordsegment.segment(self.Password)
 
         ListOfWordsLem = set()
@@ -66,8 +79,8 @@ class FindSimilarityWords:
         listOfPassword = set()
 
         for word in ListOfWordsLem:
-            Web=self.dbText['Class'].getWebsiteFromWord(word)
-            Pass=self.dbPass['Class'].getPasswordFromWord(word)
+            Web=self.dbText["Class"].getWebsiteFromWord(word)
+            Pass=self.dbPass["Class"].getPasswordFromWord(word)
             
             if Web:
                 #print(set(Web))
@@ -77,8 +90,12 @@ class FindSimilarityWords:
                 [listOfPassword.add(p) for p in Pass]
 
         #Maybe create 2 process for doing this and wait until finish
-        self.dbPass['Class'].addPassword(ListOfWordsLem,self.HashPassword)
-        self.dbText['Class'].addWebsite(self.Website,self.Text)
+        self.dbPass["Class"].addPassword(ListOfWordsLem,self.HashPassword)
+        self.dbText["Class"].addWebsite(self.Website,self.Text)
+        print('DONE FindSimilarityWord')
+
+        #print(listOfWebsite)
+        #print(listOfPassword)
 
         self.dbPass.close()
         self.dbPass.close()
@@ -98,9 +115,9 @@ if __name__ == '__main__':
          btext = f.readline()
          text = btext.decode("utf-8", "replace")
 
-    FSW = FindSimilarityWords()
-    print(FSW.ComputeSimilarity(text,'tumblr','gif','dascasdasca'))
-    print(FSW.ComputeSimilarity(text,'google','cervello','asdasda'))
+    FSW = FindSimilarityWords(text,'tumblr','gif','asdasdasda','','')
+    #print(FSW.ComputeSimilarity(text,'tumblr','gif','dascasdasca'))
+    #print(FSW.ComputeSimilarity(text,'google','cervello','asdasda'))
 
 
 

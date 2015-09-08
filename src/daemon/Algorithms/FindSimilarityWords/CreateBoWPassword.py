@@ -13,6 +13,7 @@ class CreateBoWPassword:
         else:
             self.filename = 'Words_Password'
 
+        
         self.db = shelve.open(self.filename)
 
         self.name=str('salt')

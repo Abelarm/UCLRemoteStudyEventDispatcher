@@ -4,7 +4,7 @@ import shelve
 import scrypt
 import os,binascii
 
-class CreateBoWPassword():
+class CreateBoWPassword:
 
     def __init__(self,path=None):
 
@@ -13,6 +13,7 @@ class CreateBoWPassword():
         else:
             self.filename = 'Words_Password'
 
+        
         self.db = shelve.open(self.filename)
 
         self.name=str('salt')

@@ -7,7 +7,7 @@ algorithms:
         name: "ManglePass"
         keys: "Password"
         path: "/ManglePassword"
-        version: "1.0"
+        version: "0.1"
     ShannonEntropy:
         name: "ShannonEntropy"
         keys: "Password"
@@ -16,4 +16,4 @@ algorithms:
         name: "FindSimilarityWords"
         keys: "Text",Website","Password","HashPassword"
         path: "/FindSimilarityWords"
-        version: "1.0"
+        version: "0.1"

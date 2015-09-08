@@ -28,7 +28,6 @@ class ManglePassword:
             salt = binascii.hexlify(raw)
             db[name]=salt
 
-
         db.close()
         db = shelve.open(self.filepath)
 

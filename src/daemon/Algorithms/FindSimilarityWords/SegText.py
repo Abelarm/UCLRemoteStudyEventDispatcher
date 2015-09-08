@@ -1,5 +1,6 @@
 __author__ = 'Luigi'
 
+import os
 import mmap
 import nltk.stem as lem
 
@@ -12,8 +13,8 @@ class SegText:
 
     def createList(self,Text):
 
-        f = open('StopWords')
-        s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        f = open(os.path.dirname(os.path.realpath(__file__))+'StopWords',"r")
+        stopwords = f.readlines()
 
         for word in Text.split(' '):
 
@@ -26,7 +27,7 @@ class SegText:
 
             by = str.encode(word)
 
-            if not s.find(by):
+            if by in stopwords:
                 continue
 
             try:

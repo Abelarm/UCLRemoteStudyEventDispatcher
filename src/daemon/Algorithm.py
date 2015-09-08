@@ -23,7 +23,6 @@ class Algorithm:
             else:
                 self.properties[nam]=str()
 
-
     def getKeys(self):
 
         return self.properties['keys']

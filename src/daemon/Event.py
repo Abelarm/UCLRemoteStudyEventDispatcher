@@ -4,7 +4,6 @@ import json
 
 class Event:
 
-
     # def __init__(self,EventID,WebSite,Username,Password):
     #
     #     self.EventID= EventID

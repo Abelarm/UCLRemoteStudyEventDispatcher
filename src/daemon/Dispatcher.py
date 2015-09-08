@@ -10,7 +10,6 @@ from multiprocessing import Process
 
 class Dispatcher:
 
-
     def  __init__(self):
 
         self.participant = shelve.open('DB/ParticipantDB')

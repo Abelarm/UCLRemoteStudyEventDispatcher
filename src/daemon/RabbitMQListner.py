@@ -26,10 +26,8 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
 
     channel.queue_bind(exchange=ExchangeName,queue=QueueName)
 
-
     channel.exchange_declare(exchange='rpc_queue')
     channel.queue_declare(queue='rpc_queue')
-
 
     channel.queue_bind(exchange='rpc_queue',queue='rpc_queue')
 

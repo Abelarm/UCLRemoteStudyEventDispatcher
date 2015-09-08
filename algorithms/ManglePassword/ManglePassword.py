@@ -4,11 +4,10 @@ __author__ = 'Luigi'
 import shelve
 import scrypt
 import os,binascii
-import os
 
 
 class ManglePassword:
-    def __init__(self, password, path=None,writePath=None):
+    def __init__(self, password,writePath=None,path=None):
 
 
 
@@ -19,6 +18,7 @@ class ManglePassword:
         else:
             self.filepath =  'HashPass'
 
+
         db = shelve.open(self.filepath)
 
         name="salt"
@@ -27,7 +27,6 @@ class ManglePassword:
             raw = os.urandom(16)
             salt = binascii.hexlify(raw)
             db[name]=salt
-
 
         db.close()
         db = shelve.open(self.filepath)
@@ -38,7 +37,7 @@ class ManglePassword:
             # print(db['variations'])
             hasedvar = db['variations']
             if self.hashedpassword in list(hasedvar.values()):
-                with open(writePath+'ManglePassword') as o:
+                with open(writePath+'ManglePassword','w') as o:
                     o.write('hash found:')
                     o.write(self.hashedpassword)
                 return

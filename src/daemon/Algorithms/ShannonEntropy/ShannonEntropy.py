@@ -4,6 +4,7 @@ import math
 from collections import Counter
 
 def ShannonEntropy(s,path=None):
+
     if path:
         filename=path+'ShannonEntropy'
     else:

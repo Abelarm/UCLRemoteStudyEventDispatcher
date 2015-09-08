@@ -46,6 +46,7 @@ class Participant:
 
 
     def setComputated(self,EventID,AlgName,Version):
+
         db =shelve.open(self.filenameEvents)
 
         if EventID in db:

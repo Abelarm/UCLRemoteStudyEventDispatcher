@@ -3,7 +3,7 @@ __author__ = 'Luigi'
 import shelve
 from SegText import SegText
 
-class CreateBoWText():
+class CreateBoWText:
 
     def __init__(self,path=None):
 
@@ -21,9 +21,7 @@ class CreateBoWText():
         self.db = shelve.open(self.filename)
 
         sg = SegText(Text)
- 
-        #print('in BOWTEXT')        
- 
+
         for w in sg.wordlist:
              
             #print(w.encode('utf-8','replace'))
