@@ -33,6 +33,8 @@ class FindSimilarityWords:
 
         nltk.data.path.append("/opt/python3-inst/share/")
 
+        self.ComputeSimilarity()
+
     def ComputeSimilarity(self):
 
         self.dbPass = shelve.open(self.filenamePass)
