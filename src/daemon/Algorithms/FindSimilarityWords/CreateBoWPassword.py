@@ -4,7 +4,7 @@ import shelve
 import scrypt
 import os,binascii
 
-class CreateBoWPassword():
+class CreateBoWPassword:
 
     def __init__(self,path=None):
 

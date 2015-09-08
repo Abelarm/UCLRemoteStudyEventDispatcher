@@ -3,7 +3,7 @@ __author__ = 'Luigi'
 import shelve
 from SegText import SegText
 
-class CreateBoWText():
+class CreateBoWText:
 
     def __init__(self,path=None):
 
