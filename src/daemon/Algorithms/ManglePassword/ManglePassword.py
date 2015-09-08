@@ -18,7 +18,6 @@ class ManglePassword:
         else:
             self.filepath =  'HashPass'
 
-        print(self.filepath)
 
         db = shelve.open(self.filepath)
 
