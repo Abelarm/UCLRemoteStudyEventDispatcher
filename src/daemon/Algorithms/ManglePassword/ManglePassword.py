@@ -39,7 +39,7 @@ class ManglePassword:
             # print(db['variations'])
             hasedvar = db['variations']
             if self.hashedpassword in list(hasedvar.values()):
-                with open(writePath+'ManglePassword') as o:
+                with open(writePath+'ManglePassword','w') as o:
                     o.write('hash found:')
                     o.write(self.hashedpassword)
                 return
