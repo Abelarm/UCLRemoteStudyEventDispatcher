@@ -18,6 +18,9 @@ class ManglePassword:
         else:
             self.filepath =  'HashPass'
 
+        if not writePath:
+            writePath=''
+
 
         db = shelve.open(self.filepath)
 
@@ -39,7 +42,7 @@ class ManglePassword:
             if self.hashedpassword in list(hasedvar.values()):
                 with open(writePath+'ManglePassword','w') as o:
                     o.write('hash found:')
-                    o.write(self.hashedpassword)
+                    o.write(str(self.hashedpassword))
                 return
 
         except KeyError:
@@ -65,7 +68,7 @@ class ManglePassword:
         self.parseKeyboardFile(pathFi+'/KeyboardUK')
 
 
-        self.applyMangle(5000)
+        self.applyMangle(10)
 
 
     def addRules(self, otherrule=None):
@@ -318,7 +321,10 @@ class ManglePassword:
             self.hashedpass['var' + str(i)] = binascii.hexlify(scrypt.hash(p, salt, 2048, 8, 1, 64))
             i = i + 1
 
-        self.hashedpass['var' + str(i + 1)] = self.hashedpassword
+        #self.hashedpass['var' + str(i + 1)] = self.hashedpassword
+
+        #print('hashedpass')
+        #print(len(self.hashedpass))
 
         try:
             oldhash = db['variations']
@@ -347,13 +353,16 @@ class ManglePassword:
 
         self.hashVariations()
 
-        #print(self.variations)
+        #print('variations')
         #print(len(self.variations))
+        #print()
 
 
 def main():
-    ManglePassword('asdasd')
+    ManglePassword('monkeybanana')
 
+    ManglePassword('m0nkeybanana')
+    ManglePassword('m0nkeyb@nana')
     # print(len(mp.variations))
     # print(mp.variations)
 

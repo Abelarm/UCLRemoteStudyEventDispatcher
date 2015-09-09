@@ -18,6 +18,9 @@ class ManglePassword:
         else:
             self.filepath =  'HashPass'
 
+        if not writePath:
+            writePath=''
+
 
         db = shelve.open(self.filepath)
 
@@ -65,7 +68,7 @@ class ManglePassword:
         self.parseKeyboardFile(pathFi+'/KeyboardUK')
 
 
-        self.applyMangle(5000)
+        self.applyMangle(10)
 
 
     def addRules(self, otherrule=None):
@@ -352,8 +355,9 @@ class ManglePassword:
 
 
 def main():
-    ManglePassword('asdasd')
+    ManglePassword('monkeybanana')
 
+    ManglePassword('m0nkeybanana')
     # print(len(mp.variations))
     # print(mp.variations)
 
