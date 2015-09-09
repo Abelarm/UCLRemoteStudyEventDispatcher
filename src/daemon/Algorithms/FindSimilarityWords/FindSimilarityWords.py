@@ -65,7 +65,9 @@ class FindSimilarityWords:
         self.dbText.close()
     
         self.dbPass = shelve.open(self.filenamePass)
-        self.dbText = shelve.open(self.filenameText)   
+        self.dbText = shelve.open(self.filenameText)
+
+        self.dbText["Class"].addWebsite(self.Website,self.Text)
   
         ListOfWords = wordsegment.segment(self.Password)
 
@@ -101,7 +103,6 @@ class FindSimilarityWords:
 
         #Maybe create 2 process for doing this and wait until finish
         self.dbPass["Class"].addPassword(ListOfWordsLem,self.HashPassword)
-        self.dbText["Class"].addWebsite(self.Website,self.Text)
         print('DONE FindSimilarityWord')
 
         #print(listOfWebsite)
