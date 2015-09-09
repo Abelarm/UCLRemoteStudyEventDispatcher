@@ -89,6 +89,16 @@ class FindSimilarityWords:
                 #print(set(Pass))    
                 [listOfPassword.add(p) for p in Pass]
 
+        Web=self.dbText["Class"].getWebsiteFromWord(self.Password)
+        Pass=self.dbPass["Class"].getPasswordFromWord(self.Password)
+
+        if Web:
+            #print(set(Web))
+            [listOfWebsite.add(w) for w in Web]
+        if Pass:
+            #print(set(Pass))
+            [listOfPassword.add(p) for p in Pass]
+
         #Maybe create 2 process for doing this and wait until finish
         self.dbPass["Class"].addPassword(ListOfWordsLem,self.HashPassword)
         self.dbText["Class"].addWebsite(self.Website,self.Text)
