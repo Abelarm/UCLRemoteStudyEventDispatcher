@@ -337,6 +337,15 @@ class ManglePassword:
 
         self.variations.append(self.password[0].upper()+self.password[1:])
 
+        firstupp=[]
+
+        for x in self.variations:
+            firstupp.append(x[0].upper()+x[1:])
+
+        self.variations = self.variations + firstupp
+
+
+
 
     def applyMangle(self,N, listofyears=['2015']):
 
@@ -362,7 +371,7 @@ class ManglePassword:
 def main():
     ManglePassword('monkeybanana')
 
-    ManglePassword('m0nkeybanana')
+    ManglePassword('M0nkeybanana')
     # print(len(mp.variations))
     # print(mp.variations)
 
