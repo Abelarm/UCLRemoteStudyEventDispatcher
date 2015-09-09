@@ -42,7 +42,7 @@ class ManglePassword:
             if self.hashedpassword in list(hasedvar.values()):
                 with open(writePath+'ManglePassword','w') as o:
                     o.write('hash found:')
-                    o.write(self.hashedpassword)
+                    o.write(str(self.hashedpassword))
                 return
 
         except KeyError:
