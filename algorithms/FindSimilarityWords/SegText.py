@@ -18,6 +18,8 @@ class SegText:
 
         for word in Text.split(' '):
 
+            word = word.lower()
+
             wnl = lem.WordNetLemmatizer()
             word = wnl.lemmatize(word)
 
