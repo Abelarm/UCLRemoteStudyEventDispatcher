@@ -333,6 +333,10 @@ class ManglePassword:
         db['variations'] = newhash
         db.close()
 
+    def firstUpper(self):
+
+        self.variations.append(self.password[0].upper()+self.password[1:])
+
 
     def applyMangle(self,N, listofyears=['2015']):
 
@@ -345,6 +349,7 @@ class ManglePassword:
         for y in listofyears:
             self.appendYear(y)
         self.reverse()
+        self.firstUpper()
         self.upperLower()
         self.removeDuplicate()
 

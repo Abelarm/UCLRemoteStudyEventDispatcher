@@ -42,7 +42,7 @@ class ManglePassword:
             if self.hashedpassword in list(hasedvar.values()):
                 with open(writePath+'ManglePassword','w') as o:
                     o.write('hash found:')
-                    o.write(str(self.hashedpassword))
+                    o.write(self.hashedpassword)
                 return
 
         except KeyError:
@@ -321,10 +321,7 @@ class ManglePassword:
             self.hashedpass['var' + str(i)] = binascii.hexlify(scrypt.hash(p, salt, 2048, 8, 1, 64))
             i = i + 1
 
-        #self.hashedpass['var' + str(i + 1)] = self.hashedpassword
-
-        #print('hashedpass')
-        #print(len(self.hashedpass))
+        self.hashedpass['var' + str(i + 1)] = self.hashedpassword
 
         try:
             oldhash = db['variations']
@@ -335,6 +332,10 @@ class ManglePassword:
         newhash.update(self.hashedpass)
         db['variations'] = newhash
         db.close()
+
+    def firstUpper(self):
+
+        self.variations.append(self.password[0].upper()+self.password[1:])
 
 
     def applyMangle(self,N, listofyears=['2015']):
@@ -348,21 +349,20 @@ class ManglePassword:
         for y in listofyears:
             self.appendYear(y)
         self.reverse()
+        self.firstUpper()
         self.upperLower()
         self.removeDuplicate()
 
         self.hashVariations()
 
-        #print('variations')
+        #print(self.variations)
         #print(len(self.variations))
-        #print()
 
 
 def main():
     ManglePassword('monkeybanana')
 
     ManglePassword('m0nkeybanana')
-    ManglePassword('m0nkeyb@nana')
     # print(len(mp.variations))
     # print(mp.variations)
 
