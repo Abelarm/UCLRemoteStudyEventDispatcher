@@ -197,10 +197,12 @@ class Dispatcher:
             for event in self.getAllEventFromParticipant(ParticipantID):
 
                 keys = self.algorithm[algorithmID].getKeys()
+                wkeys = list(keys)
 
-                if "Password" in keys:
-                    keys.remove("Password")
-                    keys.append("HashPassword")
+                if "Password" in wkeys:
+                    wkeys.remove("Password")
+                    if "HashPassword" not in wkeys:
+                        wkeys.append("HashPassword")
 
                 DataKey = event.getDataFromKeys(keys)
                 mainDataKey = mainevent.getDataFromKeys(keys)

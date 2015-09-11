@@ -9,7 +9,6 @@ class Algorithm:
         self.properties['keys']=[]
 
     def getKeys(self):
-
         return self.properties['keys']
 
     def getVersion(self):
