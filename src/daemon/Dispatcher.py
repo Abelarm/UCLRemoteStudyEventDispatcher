@@ -8,12 +8,22 @@ import json
 from pydoc import locate
 from multiprocessing import Process
 
+
+############################################
+#Class that dispatch all the events        #
+#                                          #
+############################################
 class Dispatcher:
 
     def  __init__(self):
 
         self.participant = shelve.open('DB/ParticipantDB')
 
+
+    ############################################
+    #Method for loading the Algorithms from a  #
+    #configuration file                        #
+    ############################################
     def loadAlgorithms(self,filename):
 
         listalg = open(filename,'r')
@@ -60,6 +70,11 @@ class Dispatcher:
         self.algorithm[alg.Name]=alg
         self.algorithm.close()
 
+
+    ############################################
+    #Method for loading the Commands for the   #
+    #dispatcher from a configuration file      #
+    ############################################
     def loadCommands(self,filename):
 
 
@@ -103,6 +118,7 @@ class Dispatcher:
         else:
             self.algorithm.close()
             return False
+
 
     def addParticipant(self,ParticipantID):
 
@@ -160,7 +176,9 @@ class Dispatcher:
         if str(ParticipantID) in self.participant:
             return self.participant[str(ParticipantID)].getAllEvents()
 
-
+    ############################################
+    #Method for computing algorithm            #
+    ############################################
     def compute(self,ParticipantID,Event):
 
         self.participant = shelve.open('DB/ParticipantDB')
@@ -179,6 +197,11 @@ class Dispatcher:
             for event in self.getAllEventFromParticipant(ParticipantID):
 
                 keys = self.algorithm[algorithmID].getKeys()
+
+                if "Password" in keys:
+                    keys.remove("Password")
+                    keys.append("HashPassword")
+
                 DataKey = event.getDataFromKeys(keys)
                 mainDataKey = mainevent.getDataFromKeys(keys)
 
@@ -188,10 +211,12 @@ class Dispatcher:
                 #print("Iter:"+str(DataKey))
                 #print("Event:"+str(mainDataKey))
 
+                #Controll if this algorithm already been launched with this parameters and the same version of it
                 if DataKey == mainDataKey and version == event.getAlgVersion(algorithmID):
                     flag = False
                     break
 
+            #if not calculate
             if flag:
                 self.setComputed(ParticipantID,str(Event[0]),algorithmID,version)
                 print("Compute: "+ self.algorithm[algorithmID].Name)
@@ -201,6 +226,7 @@ class Dispatcher:
 
                 p=self.algorithm[algorithmID].getPath()
                 #ALWAYS append the Event's directory first
+                #Directory where we are going to write to write the output file
                 subdirectory=[]
                 if p:
                     subdirectory.append(directory+'/Event_'+mainevent.getID())
@@ -214,26 +240,21 @@ class Dispatcher:
                         os.makedirs(dir)
 
                 subdirectory[0] = subdirectory[0]+'/'
-
-                #f.write('DONE\n')
                 param = []
                 for x in keys:
+                    #if one of param is password in plain text we pass Event[1] instead of mainevent.data[x]
+                    #because we never save plaintext password.
                     if x=="Password":
-                        #f.write(Event[1]+'\n')
                         param.append(Event[1])
                     else:
-                        #f.write(mainevent.data[x]+'\n')
                         param.append(mainevent.data[x])
 
-                #print(algorithmID)
-                #print(param)
+                #using locate for dynamic loading class (the class MUST be like Algorithms/Test/Test.py(class: Test))
                 loadedclass  = locate('Algorithms.'+algorithmID+'.'+algorithmID+'.'+algorithmID)
                 [param.append(s) for s in subdirectory]
                 proc=Process(target=loadedclass,args=param)
                 proc.start()
                 param=[]
-
-                #time.sleep(3)
             else:
                 print("Already computed: "+self.algorithm[algorithmID].Name)
 
@@ -285,7 +306,6 @@ class Dispatcher:
 
 
 def main():
-    #Listner(None,None,None,None,None)
     Menu()
 
 

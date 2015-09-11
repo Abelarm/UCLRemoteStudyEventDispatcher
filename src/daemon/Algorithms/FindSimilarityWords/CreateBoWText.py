@@ -3,6 +3,7 @@ __author__ = 'Luigi'
 import shelve
 from SegText import SegText
 
+#Class for create a Bunch of word from a WebSite's content
 class CreateBoWText:
 
     def __init__(self,path=None):
@@ -23,8 +24,6 @@ class CreateBoWText:
         sg = SegText(Text)
 
         for w in sg.wordlist:
-             
-            #print(w.encode('utf-8','replace'))
               
             if w in self.db.keys():
                 l = self.db[w]

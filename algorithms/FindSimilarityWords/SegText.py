@@ -1,9 +1,9 @@
 __author__ = 'Luigi'
 
 import os
-import mmap
 import nltk.stem as lem
 
+#Class for parsing a content of website
 class SegText:
 
     def __init__(self,Text):
@@ -13,7 +13,7 @@ class SegText:
 
     def createList(self,Text):
 
-        f = open(os.path.dirname(os.path.realpath(__file__))+'StopWords',"r")
+        f = open(os.path.dirname(os.path.realpath(__file__))+'/StopWords',"r")
         stopwords = f.readlines()
 
         for word in Text.split(' '):
@@ -21,6 +21,7 @@ class SegText:
             word = word.lower()
 
             wnl = lem.WordNetLemmatizer()
+            #lemmatization
             word = wnl.lemmatize(word)
 
             for x in self.symbols:
@@ -29,6 +30,7 @@ class SegText:
 
             by = str.encode(word)
 
+            #removing stopwords
             if by in stopwords:
                 continue
 

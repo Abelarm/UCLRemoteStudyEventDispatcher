@@ -4,6 +4,8 @@ import shelve
 import scrypt
 import os,binascii
 
+
+#Class for create a Bunch of word from a Password
 class CreateBoWPassword:
 
     def __init__(self,path=None):
@@ -59,10 +61,6 @@ class CreateBoWPassword:
         Word = Word.lower()
 
         hashw = binascii.hexlify(scrypt.hash(Word, salt, 2048, 8, 1, 64))
-	
-        #print(hashw)
-        #print(salt)
-        #print(self.db)
 	
         if str(hashw) in self.db.keys():
 

@@ -5,11 +5,10 @@ import shelve
 import scrypt
 import os,binascii
 
-
+#Class for create Mangle of Password
 class ManglePassword:
+
     def __init__(self, password,writePath=None,path=None):
-
-
 
         self.password = password
 
@@ -43,6 +42,8 @@ class ManglePassword:
                 with open(writePath+'ManglePassword','w') as o:
                     o.write('hash found:')
                     o.write(str(self.hashedpassword))
+                #This return stop the mangling of current password if it's a mangle of some old password
+                #you can remove it, if you want
                 return
 
         except KeyError:
@@ -64,13 +65,14 @@ class ManglePassword:
         print('Appling the rules')
         self.addRules()
         self.addSymbol()
+        #Parsing Keyboard pattern
         pathFi = os.path.dirname(os.path.realpath(__file__))
         self.parseKeyboardFile(pathFi+'/KeyboardUK')
 
 
         self.applyMangle(10)
 
-
+    #Method for adding mangle rule, add if you need more
     def addRules(self, otherrule=None):
 
         self.rules.append(['@', 'a', 'A'])
@@ -122,7 +124,7 @@ class ManglePassword:
 
         return
 
-
+    #Common symbols
     def addSymbol(self, othersymbol=None):
 
         self.symbols = ['!', "+", '=', '?', '/', '\\', '#', '%', '&', '*', ';', ':']
@@ -130,9 +132,8 @@ class ManglePassword:
         if othersymbol:
             self.symbols.append(othersymbol)
 
-
+    #Apply mangle, Threshold is the max number of substitution for every password
     def substitute(self,Threshold=10):
-
 
         for s in self.rules:
             for c in self.password:
@@ -144,9 +145,8 @@ class ManglePassword:
                                 self.variations.append(self.password.replace(c, x, i))
                         i = i + 1
 
-
-    def resubsitute(self,Threshold=10):
-
+    #Apply mangle on Mangled Password
+    def resubstitute(self,Threshold=10):
 
         resos = []
 
@@ -166,6 +166,7 @@ class ManglePassword:
         self.variations = self.variations + resos
 
 
+    #Substitute the keyboard pattern
     def substituteKeyboard(self,Threshold=10):
 
         for k in self.keyboardrule.keys():
@@ -258,6 +259,7 @@ class ManglePassword:
         self.variations = self.variations + sosupplow
 
 
+    #Method for alternating Lower and Upper
     def altLowUpp(self,string):
 
         i=0
@@ -275,7 +277,7 @@ class ManglePassword:
         else:
             return None
 
-
+    #Method for alternating Upper and Lower
     def altUppLow(self,string):
 
         i=0
@@ -298,7 +300,7 @@ class ManglePassword:
 
         self.variations=list(set(self.variations))
 
-
+    #Method for hash password and adding to DB
     def hashPassword(self):
 
         db = shelve.open(self.filepath)
@@ -310,7 +312,7 @@ class ManglePassword:
 
         self.hashedpassword = hashedpass
 
-
+    #Method for hash Mangled password and adding to DB
     def hashVariations(self):
         i = 0
 
@@ -350,7 +352,7 @@ class ManglePassword:
     def applyMangle(self,N, listofyears=['2015']):
 
         self.substitute()
-        self.resubsitute()
+        self.resubstitute()
         self.substituteKeyboard()
         self.appendSymbol()
         self.incrementNumber()

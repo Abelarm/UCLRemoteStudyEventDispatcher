@@ -4,6 +4,7 @@ import shelve
 from Event import Event
 import os
 
+#Class that represent an Event of the Framework
 class Participant:
 
     def __init__(self,ParticipantID):
@@ -11,20 +12,6 @@ class Participant:
         self.filenameEvents ='DB/Participant_'+ str(ParticipantID)+'_EventsDB'
         db = shelve.open(self.filenameEvents)
         db.close()
-
-    def insertEvent(self,EventID,WebSite,Username,Password):
-
-        db = shelve.open(self.filenameEvents)
-
-        if not str(EventID) in db:
-            #Add Event#
-            db[str(EventID)] = Event(EventID,WebSite,Username,Password)
-            db.close()
-            return True
-        else:
-            db.close()
-            return False
-
 
     def insertEvent(self,Eventdata,fileName=None):
 

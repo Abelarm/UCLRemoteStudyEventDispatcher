@@ -3,12 +3,14 @@ import shelve
 import wordsegment
 import nltk.stem as lem
 import nltk
-from pydoc import locate
 import sys,os
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 from CreateBoWText import CreateBoWText
 from CreateBoWPassword import CreateBoWPassword
 
+#Class for Searching the Similiarity between the current password and the
+#old password of the same participant and for finding some relations between
+#current password and the content of the websites
 class FindSimilarityWords:
 
     def __init__(self,Text,Website,Password,HashPassword,writePath=None,Path=None):
@@ -40,7 +42,7 @@ class FindSimilarityWords:
 
         nltk.data.path.append("/opt/python3-inst/share/")
         
-        self.ComputeSimilarity()       
+        #self.ComputeSimilarity()
  
     def ComputeSimilarity(self):
 
@@ -101,7 +103,7 @@ class FindSimilarityWords:
             #print(set(Pass))
             [listOfPassword.add(p) for p in Pass]
 
-        #Maybe create 2 process for doing this and wait until finish
+        #Maybe create different process for doing this and wait until finish
         self.dbPass["Class"].addPassword(ListOfWordsLem,self.HashPassword)
         print('DONE FindSimilarityWord')
 

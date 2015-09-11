@@ -2,32 +2,32 @@ __author__ = 'Luigi'
 
 import json
 
+#Class that represent an Event of the Framework
 class Event:
 
-    # def __init__(self,EventID,WebSite,Username,Password):
-    #
-    #     self.EventID= EventID
-    #     self.WebSite= WebSite
-    #     self.Username = Username
-    #     self.Password = Password
+    def __init__(self):
+        self.data=dict()
 
+    #Create the Event data from a json file
     def parseJson(self,EventFile):
 
         f = open(EventFile,'r',-1,'utf-8','replace')
      
         self.data = json.load(f)
         password = self.data["Password"]
-        #self.data["Password"] = crypt(password)
-        self.data['Algorithms']=dict()
+        del self.data["Password"]
+        #Algorithms that have been calculated for this Event
+        self.data["Algorithms"]=dict()
         return password
 
-
+    #Create the Event from a dict
     def addData(self,Event):
 
         self.data = Event
-        self.data['Algorithms']=dict()
-        password = self.data['Password']
-        #self.data['Password'] = crypt(password)
+        #Algorithms that have been calculated for this Event
+        self.data["Algorithms"]=dict()
+        password = self.data["Password"]
+        del self.data["Password"]
         return password
 
     def getID(self):
@@ -41,7 +41,6 @@ class Event:
     def getDataFromKeys(self,Keys):
         toreturn=[]
         for key in Keys:
-            #print(key)
             toreturn.append(self.data[key])
         return toreturn
 
@@ -51,9 +50,9 @@ class Event:
         self.data['Algorithms'][AlgName]=Version
         return self
 
-    def comparePassword(self,Password):
+    def comparePassword(self,HashPassword):
 
-        if self.data["HashPassword"]==Password:
+        if self.data["HashPassword"]==HashPassword:
             return True
         else:
             return False
@@ -74,32 +73,12 @@ class Event:
             None
         return toret
 
-    def loadConf(self):
-
-        conf = open('Configurations/Event.yml','r')
-
-        self.properties= dict()
-
-        for line in conf:
-            nam = line.split(':')[0]
-            typ = line.split(':')[1]
-
-            if typ == '+':
-                self.properties[nam]=[]
-            else:
-                self.properties[nam]=str()
-
 
     def __str__(self):
         return str(self.data)
 
-    #def __str__(self):
-    #    return 'ID '+ self.EventID+ ' WebSite ' + self.WebSite + ' Username ' + self.Username + ' Password ' + self.Password
-
 
 def main():
-
-    #Eve = Event('1','google.com','a','b')
 
     Eve = Event()
     print(Eve.parseJson('Event1.json'))
@@ -110,18 +89,6 @@ def main():
 
     print(Eve.comparePassword('secret'))
 
-    # for x in Eve.properties:
-    #
-    #     data = input('GIMME: ' + x + ' ')
-    #
-    #     if not ',' in data:
-    #         Eve.properties[x]=data
-    #         continue
-    #
-    #     for subdata in data.split(','):
-    #         Eve.properties[x].append(subdata)
-    #
-    # print (Eve.properties)
 
 
 if __name__ == "__main__":

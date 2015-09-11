@@ -10,6 +10,7 @@ ids=0
 
 def Listner(Host,Port,SSL,QueueName,ExchangeName):
 
+    #Choosing between normal connection to secure connection
     if SSL:
         connection = pika.BlockingConnection( pika.ConnectionParameters(Host,Port,ssl=True, ssl_options=SSL))
     else:
@@ -18,7 +19,9 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
     channel = connection.channel()
 
     disp=Dispatcher()
+    #Loading Algorithms configurations
     disp.loadAlgorithms('Configurations/Algorithms.yml')
+    #Loading Commands configurations
     disp.loadCommands('Configurations/Commands.json')
 
     channel.exchange_declare(exchange=ExchangeName,durable=True)
@@ -33,8 +36,8 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
 
     print (' [*] Waiting for messages. To exit press CTRL+C')
 
+    #Method for NO-RPC call
     def callback(ch, method, properties, body):
-
 
         text=body.decode(encoding="utf-8", errors="strict")
         print(text)
@@ -66,19 +69,18 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
         ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
+    #Method for RPC CALL
     def on_request(ch, method, props, body):
-
-        #print(body)
 
         try:
 
             text=body.decode(encoding="utf-8", errors="strict")
 
+            #parsing data
             Stringio = StringIO(text)
             data = json.load(Stringio)
 
-            print(data)
-
+            #print(data)
             if data['Command'] == disp.getCommand('Add Participant'):
                 print ('Add Participant')
                 ret=disp.addParticipant(data['Participant'])
@@ -126,7 +128,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
 
 
             if data['Command'] == disp.getCommand('Delete Password'):
-                ret=disp.deletePassword(data['Participant'],data['Password'])
+                ret=disp.deletePassword(data['Participant'],data['HashPassword'])
                 if ret:
                     response='ACK From Delete Password'
                 else:
@@ -155,6 +157,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
                 else:
                     response='NACK From Delete Participant'
 
+            #sending response
             ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = props.correlation_id),

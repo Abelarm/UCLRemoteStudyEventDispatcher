@@ -1,27 +1,12 @@
 __author__ = 'Luigi'
 
+#Class that represents an Algorithm of the framework
 class Algorithm:
 
     def __init__(self,Name):
         self.Name=Name
         self.properties={}
         self.properties['keys']=[]
-        #self.loadConf()
-
-    def loadConf(self):
-
-        conf = open('Configurations/Algorithm.yml','r')
-
-        self.properties= dict()
-
-        for line in conf:
-            nam = line.split(':')[0]
-            typ = line.split(':')[1]
-
-            if typ == '+':
-                self.properties[nam]=[]
-            else:
-                self.properties[nam]=str()
 
     def getKeys(self):
 
