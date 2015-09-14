@@ -152,7 +152,7 @@ class Dispatcher:
         self.participant = shelve.open('DB/ParticipantDB')
 
         if ParticipantID in self.participant:
-            toreturn = self.participant[ParticipantID].setComputated(EventID,AlgName,Version)
+            toreturn = self.participant[ParticipantID].setComputed(EventID,AlgName,Version)
             self.participant.close()
             return toreturn
         else:

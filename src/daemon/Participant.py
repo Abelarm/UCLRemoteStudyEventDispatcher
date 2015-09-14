@@ -32,12 +32,12 @@ class Participant:
             return False
 
 
-    def setComputated(self,EventID,AlgName,Version):
+    def setComputed(self,EventID,AlgName,Version):
 
         db =shelve.open(self.filenameEvents)
 
         if EventID in db:
-            db[EventID]=db[EventID].setComputated(AlgName,Version)
+            db[EventID]=db[EventID].setComputed(AlgName,Version)
             db.close()
             return True
         else:

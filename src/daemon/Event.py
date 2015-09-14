@@ -45,7 +45,7 @@ class Event:
         return toreturn
 
 
-    def setComputated(self,AlgName,Version):
+    def setComputed(self,AlgName,Version):
 
         self.data['Algorithms'][AlgName]=Version
         return self
@@ -66,7 +66,7 @@ class Event:
 
     def getPrintEvent(self):
 
-        toret = self
+        toret = dict(self)
         try:
             del(toret.data['Algorithms'])
         except (KeyError):
