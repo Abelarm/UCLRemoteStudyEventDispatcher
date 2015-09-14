@@ -14,6 +14,6 @@ algorithms:
         version: "1.0"
     FindSimilarityWords:
         name: "FindSimilarityWords"
-        keys: "Text",Website","Password","HashPassword"
+        keys: "Text","Website","Password","HashPassword"
         path: "/FindSimilarityWords"
         version: "0.1"
