@@ -1,4 +1,4 @@
-The Event class methods:
+#The Event class methods:
 
     parseJson(EventFile) [create Event from jsonFile]
 
@@ -16,7 +16,7 @@ The Event class methods:
     getAlgVersion(AlgName) [get the version of the Algorithm computed with AlgName]
 
 
-The Algorithm class methods:
+#The Algorithm class methods:
 
     getKeys() [return the keys of the algorithm]
 
@@ -25,7 +25,7 @@ The Algorithm class methods:
     getPath() [return the path of the algorithm]
 
 
-The Participant class method:
+#The Participant class method:
 
     insertEvent(Eventdata,fileName=None) [insert a event for the current participant, if fileName given
                                             create the Event from that file]
