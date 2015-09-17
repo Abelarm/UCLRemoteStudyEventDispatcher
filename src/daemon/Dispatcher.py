@@ -1,7 +1,7 @@
 __author__ = 'Luigi'
 
 import shelve
-import os
+import os,sys
 from Participant import Participant
 from Algorithm import Algorithm
 import json
@@ -15,11 +15,15 @@ from multiprocessing import Process
 ############################################
 class Dispatcher:
 
-    def  __init__(self):
+    def  __init__(self,ConfigPath):
 
-        self.participant = shelve.open('DB/ParticipantDB')
-
-
+        self.ConfigPath = ConfigPath
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
+  
+        sys.path.insert(1, self.ConfigPath['prefix']+self.ConfigPath['Algorithms'])
+         
+        #print(sys.path)
+       
     ############################################
     #Method for loading the Algorithms from a  #
     #configuration file                        #
@@ -28,13 +32,13 @@ class Dispatcher:
 
         listalg = open(filename,'r')
 
-        if os.path.dirname(os.path.abspath('DB'))+'/DB/AlgorithmDB.db':
-            os.remove(os.path.dirname(os.path.abspath('DB'))+'/DB/AlgorithmDB.db')
-            self.algorithm= shelve.open('DB/AlgorithmDB')
+        if os.path.dirname(os.path.abspath(self.ConfigPath['DB']))+'/AlgorithmsDB':
+            os.remove(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/AlgorithmsDB')
+            self.algorithm= shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/AlgorithmsDB')
 
         alg=None
 
-        self.algorithm = shelve.open('DB/AlgorithmDB')
+        self.algorithm = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/AlgorithmsDB')
 
         for line in  listalg:
             line= line.strip()
@@ -71,6 +75,8 @@ class Dispatcher:
         self.algorithm.close()
 
 
+
+
     ############################################
     #Method for loading the Commands for the   #
     #dispatcher from a configuration file      #
@@ -78,16 +84,16 @@ class Dispatcher:
     def loadCommands(self,filename):
 
 
-        if os.path.dirname(os.path.abspath('DB'))+'/DB/CommandsDB.db':
-            os.remove(os.path.dirname(os.path.abspath('DB'))+'/DB/CommandsDB.db')
-            self.commands= shelve.open('DB/CommandsDB')
+        if os.path.dirname(os.path.abspath('DB'))+self.ConfigPath['DB']+'/CommandsDB':
+            os.remove(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/CommandsDB')
+            self.commands= shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/CommandsDB')
 
         with open(filename,'r') as listcommand:
             data = json.load(listcommand)
 
             #print(data['Commands'])
 
-        self.commands = shelve.open('DB/CommandsDB')
+        self.commands = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/CommandsDB')
 
         for key in data['Commands']:
 
@@ -101,7 +107,7 @@ class Dispatcher:
 
     def getCommand(self,Command):
 
-        self.commands= shelve.open('DB/CommandsDB')
+        self.commands= shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/CommandsDB')
         if Command in self.commands:
             return self.commands[Command]
         else:
@@ -110,7 +116,7 @@ class Dispatcher:
 
     def getAlgorithm(self,Name):
 
-        self.algorithm = shelve.open('DB/AlgorithmDB')
+        self.algorithm = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/AlgorithmsDB')
 
         if str(Name) in self.algorithm:
             self.algorithm.close()
@@ -122,24 +128,24 @@ class Dispatcher:
 
     def addParticipant(self,ParticipantID):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if not str(ParticipantID) in self.participant:
-            self.participant[str(ParticipantID)] = Participant(str(ParticipantID))
+            self.participant[str(ParticipantID)] = Participant(str(ParticipantID),self.ConfigPath)
             self.participant.close()
             return True
         else:
             self.participant.close()
             return False
 
-    def inserEvent(self,ParticipandID,Event,Test=None):
+    def insertEvent(self,ParticipandID,Event,Test=None):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if ParticipandID not in self.participant:
             self.addParticipant(ParticipandID)
             self.participant.close()
-            self.participant = shelve.open('DB/ParticipantDB')
+            self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
         if Test:
             toret=self.participant[ParticipandID].insertEvent(None,Event)
         else:
@@ -149,7 +155,7 @@ class Dispatcher:
 
     def setComputed(self,ParticipantID,EventID,AlgName,Version):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if ParticipantID in self.participant:
             toreturn = self.participant[ParticipantID].setComputed(EventID,AlgName,Version)
@@ -161,7 +167,7 @@ class Dispatcher:
 
     def getEventFromParticipant(self, ParticipantID, EventID):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if str(ParticipantID) in self.participant:
             Event = self.participant[str(ParticipantID)].getEvent(str(EventID))
@@ -171,7 +177,7 @@ class Dispatcher:
 
     def getAllEventFromParticipant(self,ParticipantID):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if str(ParticipantID) in self.participant:
             return self.participant[str(ParticipantID)].getAllEvents()
@@ -181,8 +187,8 @@ class Dispatcher:
     ############################################
     def compute(self,ParticipantID,Event):
 
-        self.participant = shelve.open('DB/ParticipantDB')
-        self.algorithm = shelve.open('DB/AlgorithmDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
+        self.algorithm = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/AlgorithmsDB')
 
         mainevent = self.getEventFromParticipant(ParticipantID,str(Event[0]))
 
@@ -204,8 +210,8 @@ class Dispatcher:
                     if "HashPassword" not in wkeys:
                         wkeys.append("HashPassword")
 
-                DataKey = event.getDataFromKeys(keys)
-                mainDataKey = mainevent.getDataFromKeys(keys)
+                DataKey = event.getDataFromKeys(wkeys)
+                mainDataKey = mainevent.getDataFromKeys(wkeys)
 
                 if event.getID() == mainevent.getID():
                     continue
@@ -222,7 +228,7 @@ class Dispatcher:
             if flag:
                 self.setComputed(ParticipantID,str(Event[0]),algorithmID,version)
                 print("Compute: "+ self.algorithm[algorithmID].Name)
-                directory='Participant_'+ParticipantID
+                directory=self.ConfigPath['prefix']+self.ConfigPath['local']+'/'+self.ConfigPath['projectname']+'/'+ParticipantID
                 if not os.path.exists(directory):
                     os.makedirs(directory)
 
@@ -240,6 +246,7 @@ class Dispatcher:
                 for dir in subdirectory:
                     if not os.path.exists(dir):
                         os.makedirs(dir)
+                        os.makedirs(dir+'/DATA')
 
                 subdirectory[0] = subdirectory[0]+'/'
                 param = []
@@ -252,8 +259,12 @@ class Dispatcher:
                         param.append(mainevent.data[x])
 
                 #using locate for dynamic loading class (the class MUST be like Algorithms/Test/Test.py(class: Test))
-                loadedclass  = locate('Algorithms.'+algorithmID+'.'+algorithmID+'.'+algorithmID)
-                [param.append(s) for s in subdirectory]
+                loadedclass  = locate(algorithmID+'.'+algorithmID+'.'+algorithmID)
+                #print(type(loadedclass))
+                for s in subdirectory:
+                    s=s+'DATA'
+                    param.append(s)
+                    #print(s)
                 proc=Process(target=loadedclass,args=param)
                 proc.start()
                 param=[]
@@ -267,7 +278,7 @@ class Dispatcher:
 
     def deleteParticipant(self,ParticipantID):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if ParticipantID in self.participant:
             self.participant[ParticipantID].deleteEvents()
@@ -280,7 +291,7 @@ class Dispatcher:
 
     def deleteEvent(self,ParticipantID,EventID):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if ParticipantID in self.participant:
 
@@ -293,7 +304,7 @@ class Dispatcher:
 
     def deletePassword(self,ParticipantID,Password):
 
-        self.participant = shelve.open('DB/ParticipantDB')
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
 
         if ParticipantID in self.participant:
 
@@ -313,7 +324,7 @@ def main():
 
 def Menu():
 
-    disp=Dispatcher()
+    disp=Dispatcher(paths)
     disp.loadAlgorithms('Configurations/Algorithms.yml')
     disp.loadCommands('Configurations/Commands.json')
 
@@ -334,7 +345,8 @@ def Menu():
     def loadEvent():
         id = input("Give ID of which user create event:"+prompt)
         path = input("Give path of event:"+prompt)
-        eve=disp.inserEvent(id,path,Test=True)
+        eve=disp.insertEvent(id,path,Test=True)
+        print(eve)
         if not eve:
             print("Somenthing wrong!!")
             return False

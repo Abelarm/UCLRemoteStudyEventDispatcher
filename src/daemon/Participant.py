@@ -7,9 +7,10 @@ import os
 #Class that represent an Event of the Framework
 class Participant:
 
-    def __init__(self,ParticipantID):
+    def __init__(self,ParticipantID,ConfigPath):
 
-        self.filenameEvents ='DB/Participant_'+ str(ParticipantID)+'_EventsDB'
+        self.ConfigPath = ConfigPath
+        self.filenameEvents =self.ConfigPath['prefix'] + self.ConfigPath['DB'] +'/'+str(ParticipantID)+'_EventsDB'
         db = shelve.open(self.filenameEvents)
         db.close()
 

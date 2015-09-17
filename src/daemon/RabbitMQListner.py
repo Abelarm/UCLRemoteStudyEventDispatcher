@@ -8,7 +8,8 @@ import sys,traceback
 
 ids=0
 
-def Listner(Host,Port,SSL,QueueName,ExchangeName):
+def Listner(Host,Port,SSL,QueueName,ExchangeName,ConfigPaths):
+
 
     #Choosing between normal connection to secure connection
     if SSL:
@@ -18,11 +19,11 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
 
     channel = connection.channel()
 
-    disp=Dispatcher()
+    disp=Dispatcher(ConfigPaths)
     #Loading Algorithms configurations
-    disp.loadAlgorithms('Configurations/Algorithms.yml')
+    disp.loadAlgorithms(ConfigPaths['prefix']+ConfigPaths['ConfigAlgorithms']+'/Algorithms.yml')
     #Loading Commands configurations
-    disp.loadCommands('Configurations/Commands.json')
+    disp.loadCommands(ConfigPaths['prefix']+ConfigPaths['ConfigAlgorithms']+'/Commands.json')
 
     channel.exchange_declare(exchange=ExchangeName,durable=True)
     channel.queue_declare(queue=QueueName)
@@ -58,7 +59,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
             data['Event']['ID']= str(ids)
             ids = ids +1
 
-            eve=disp.inserEvent(data['Participant'],data['Event'])
+            eve=disp.insertEvent(data['Participant'],data['Event'])
             if not eve:
                 print("Somenthing wrong!!")
             else:
@@ -97,7 +98,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName):
                 data['Event']['ID']= str(ids)+'_'+data['TimeStamp']+'_'+data['Participant']
                 ids = ids +1
 
-                eve=disp.inserEvent(data['Participant'],data['Event'])
+                eve=disp.insertEvent(data['Participant'],data['Event'])
                 if not eve:
                     response='NACK From Insert Event'
                 else:
