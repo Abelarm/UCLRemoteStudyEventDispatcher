@@ -70,7 +70,7 @@ class Event:
         try:
             del(toret.data['Algorithms'])
         except (KeyError):
-            None
+            True
         return toret
 
 
