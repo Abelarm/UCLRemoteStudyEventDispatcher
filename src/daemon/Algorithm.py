@@ -25,8 +25,7 @@ class Algorithm:
 
 
 def main():
-
-    Alg = Algorithm('Antonio',['a','b','c'])
+     Alg = Algorithm('TEST',['a','b','c'])
 
 
 if __name__ == "__main__":
