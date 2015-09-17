@@ -9,10 +9,10 @@ reference: https://www.rabbitmq.com/ssl.html
 ensure that RabbitMQ works.
 
 Run setup.py install -path /path <br />
-This will install all the packages needed for the framework<br />
-** pip is needed<br />
+______This will install all the packages needed for the framework<br />
+______** pip is needed<br />
 
 Run setup.py uninstall for removing all the component<br />
-Also the output of the algorithms<br />
+______Also the output of the algorithms<br />
 
 Python 3.3+, pip is needed
