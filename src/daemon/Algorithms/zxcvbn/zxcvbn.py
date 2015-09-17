@@ -1,9 +1,9 @@
 __author__ = 'Luigi'
 
-import zxcvbn as zx
+import Zxcvbn as zx
 import pprint
 
-def zxcvbn(Password,path=None):
+def Zxcvbn(Password,path=None):
 
     if path:
         file = path+'zxcvbn'
