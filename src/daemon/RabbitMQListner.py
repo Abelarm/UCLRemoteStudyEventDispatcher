@@ -103,8 +103,8 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName,ConfigPaths):
                     response='NACK From Insert Event'
                 else:
                     print("EventID:"+ str(eve[0]))
-                    disp.compute(data['Participant'],eve)
                     response='ID:'+ str(eve[0])
+                    disp.compute(data['Participant'],eve)
 
 
             if data['Command'] == disp.getCommand('List Event'):
