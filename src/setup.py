@@ -49,10 +49,10 @@ if args.command=='install':
         for name in listofpackage:
             if name not in installed_package:
                 print('Installing: ' +name)
-                #subprocess.call(['pip', 'install', name])
+                subprocess.call(['pip', 'install', name])
         import nltk
         print('Downloading: nltk corpus')
-        #nltk.download()
+        nltk.download()
 
 
 
@@ -65,30 +65,30 @@ if args.command=='install':
         if key=='projectname':
             continue
         print('Creating: '+prefix+cf.paths[key])
-        #os.makedirs(prefix+cf.path[key])
+        os.makedirs(prefix+cf.path[key])
 
         if key=='ConfigAlgorithms':
             print('Creating: '+prefix+cf.paths[key]+'AlgorithmsDB')
-            #open(str(prefix+cf.paths[key])+'/AlgorithmsDB','w+')
+            open(str(prefix+cf.paths[key])+'/AlgorithmsDB','w+')
         if key=='ConfigAlgorithms':
             print('Creating: '+prefix+cf.paths[key]+'CommandsDB')
-            #open(str(prefix+cf.paths[key])+'/CommandsDB','w+')
+            open(str(prefix+cf.paths[key])+'/CommandsDB','w+')
 
 
     for f in sorucefile:
         print('copying: '+f +' => '+prefix+cf.paths['main'])
-        #shutil.copy(f,prefix+cf.paths['main'])
+        shutil.copy(f,prefix+cf.paths['main'])
 
     print('copying: '+cwd+'/Confpath.py' +' => '+prefix)
-    #shutil.copy(cwd+'/Confpath.py',prefix)
+    shutil.copy(cwd+'/Confpath.py',prefix)
     print('copying: '+cwd+'/ucl-dispatcher.py' +' => '+prefix)
-    #shutil.copy(cwd+'/ucl-dispatcher.py',prefix)
+    shutil.copy(cwd+'/ucl-dispatcher.py',prefix)
 
 
     for x in os.listdir(algsourcepath):
         if not x.startswith('.'):
             print('copying: '+algsourcepath+x +' => '+prefix+cf.paths['Algorithms'])
-            #shutil.copytree(x,prefix+cf.paths['Algorithms'])
+            shutil.copytree(x,prefix+cf.paths['Algorithms'])
 
 elif args.command=='uninstall':
 
@@ -105,7 +105,7 @@ elif args.command=='uninstall':
         if key=='projectname':
             continue
         print('Removing: '+prefix+cf.paths[key])
-        #shutil.rmtree(x,prefix+cf.paths[key])
+        shutil.rmtree(x,prefix+cf.paths[key])
 
 
 
