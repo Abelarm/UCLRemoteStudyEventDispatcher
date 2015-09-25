@@ -121,7 +121,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName,ConfigPaths):
 
             if data['Command'] == disp.getCommand('Delete Event'):
 
-                ret=disp.deleteEvent(data['Participant'],data['Event'])
+                ret=disp.deleteEvent(data['Participant'],data['ID'])
                 if ret:
                     response='ACK From List Event'
                 else:
