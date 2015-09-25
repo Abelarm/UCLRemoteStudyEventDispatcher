@@ -320,7 +320,7 @@ class Dispatcher:
 
         if ParticipantID in self.participant:
 
-            toreturn= self.participant[ParticipantID].deleteEventFromPassword(Website)
+            toreturn= self.participant[ParticipantID].deleteEventFromWebsite(Website)
             self.participant.close()
             return toreturn
 
