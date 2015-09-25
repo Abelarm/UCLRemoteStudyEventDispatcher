@@ -129,7 +129,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName,ConfigPaths):
 
 
             if data['Command'] == disp.getCommand('Delete Password'):
-                ret=disp.deletePassword(data['Participant'],data['HashPassword'])
+                ret=disp.deletePassword(data['Participant'],data['Event']['HashPassword'])
                 if ret:
                     response='ACK From Delete Password'
                 else:
