@@ -92,8 +92,8 @@ class Participant:
         db.close()
 
     def deleteEvents(self):
-        if os.path.dirname(os.path.abspath('DB'))+'/'+self.filenameEvents+'.db':
-            os.remove(os.path.dirname(os.path.abspath('DB'))+'/'+self.filenameEvents+'.db')
+        if os.path.dirname(os.path.abspath('DB'))+'/'+self.filenameEvents:
+            os.remove(os.path.dirname(os.path.abspath('DB'))+'/'+self.filenameEvents)
 
 
 
