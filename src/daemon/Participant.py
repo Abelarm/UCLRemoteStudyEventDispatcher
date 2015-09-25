@@ -91,7 +91,7 @@ class Participant:
 
         db.close()
 
-    def deleteEventWebsite(self,Website):
+    def deleteEventFromWebsite(self,Website):
 
         db = shelve.open(self.filenameEvents)
 
