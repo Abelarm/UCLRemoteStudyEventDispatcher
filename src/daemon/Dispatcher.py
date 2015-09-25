@@ -314,6 +314,18 @@ class Dispatcher:
 
         return False
 
+    def deleteWebsite(self,ParticipantID,Website):
+
+        self.participant = shelve.open(self.ConfigPath['prefix']+self.ConfigPath['DB']+'/ParticipantDB')
+
+        if ParticipantID in self.participant:
+
+            toreturn= self.participant[ParticipantID].deleteEventFromPassword(Website)
+            self.participant.close()
+            return toreturn
+
+        return False
+
 
 
 

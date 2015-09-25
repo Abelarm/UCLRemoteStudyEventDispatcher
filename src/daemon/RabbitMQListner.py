@@ -136,7 +136,7 @@ def Listner(Host,Port,SSL,QueueName,ExchangeName,ConfigPaths):
                     response='NACK Frome Delete Password'
 
             if data['Command'] == disp.getCommand('Delete WebSite'):
-                None
+                disp.deleteWebsite(data['Participant'],data['Event']['Website'])
 
             if data['Command'] == disp.getCommand('Delete All Event'):
                 ret=True

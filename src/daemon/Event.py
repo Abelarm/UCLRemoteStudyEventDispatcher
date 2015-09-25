@@ -57,6 +57,13 @@ class Event:
         else:
             return False
 
+    def compareWebsite(self,Website):
+
+        if self.data["HashPassword"]==Website:
+            return True
+        else:
+            return False
+
     def getAlgVersion(self,AlgName):
 
         if AlgName in self.data['Algorithms']:

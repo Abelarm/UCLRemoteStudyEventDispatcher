@@ -91,6 +91,17 @@ class Participant:
 
         db.close()
 
+    def deleteEventWebsite(self,Website):
+
+        db = shelve.open(self.filenameEvents)
+
+        for event in db:
+
+            if db[event].compareWebiste(Website):
+                del(db[event])
+
+        db.close()
+
     def deleteEvents(self):
         if os.path.dirname(os.path.abspath('DB'))+'/'+self.filenameEvents:
             os.remove(os.path.dirname(os.path.abspath('DB'))+'/'+self.filenameEvents)
